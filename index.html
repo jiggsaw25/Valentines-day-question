@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will You Be My Valentine?</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sacramento&display=swap">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            background-color: #FADADD; /* Pink Background */
+            overflow-y: auto; /* Allow scrolling for the details */
+        }
+
+        #container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        #image-container {
+            margin-bottom: 10px;
+        }
+
+        #image-container img {
+            max-width: 300px; 
+            height: auto;
+            border-radius: 10px;
+        }
+
+        #question {
+            font-family: 'Sacramento', cursive;
+            font-size: 52px;
+            color: #d32f2f;
+        }
+
+        #options {
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 0 10px;
+            font-size: 26px;
+            font-family: 'Sacramento', cursive;
+            background-color: #FB607F;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        button:hover {
+            transform: scale(1.1);
+        }
+
+        /* Style for the Date Details */
+        #date-details {
+            font-family: Arial, sans-serif; /* Readable font for details */
+            font-size: 18px;
+            color: #d32f2f;
+            margin-top: 20px;
+            line-height: 1.6;
+            background-color: rgba(255, 255, 255, 0.6);
+            padding: 20px;
+            border-radius: 15px;
+            max-width: 400px;
+        }
+
+        .restaurant-photo {
+            width: 100%;
+            max-width: 300px;
+            border-radius: 10px;
+            margin: 15px 0;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .final-message {
+            font-family: 'Sacramento', cursive;
+            font-size: 45px;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="image-container"></div>
+        <div id="text-container">
+            <div id="question">Will you be my valentine?</div>
+            <div id="options">
+                <button id="yes-button" onclick="selectOption('yes')">Yes</button>
+                <button id="no-button" onclick="selectOption('no')">No</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Function to handle button click events
+        function selectOption(option) {
+            if (option === 'yes') {
+                flashRainbowColors(function() {
+                    displaySuccess(); // Switch to the success display
+                });
+            } else if (option === 'no') {
+                document.getElementById('no-button').innerText = 'You sure?'; 
+                var yesButton = document.getElementById('yes-button');
+                var currentFontSize = window.getComputedStyle(yesButton).getPropertyValue('font-size');
+                var newSize = parseFloat(currentFontSize) * 2; 
+                yesButton.style.fontSize = newSize + 'px';
+            } else {
+                alert('Invalid option!');
+            }
+        }
+
+        // Function to flash rainbow colors
+        function flashRainbowColors(callback) {
+            var colors = ['#ff0000', '#ff7f00', '#ffff00', '#00ff00', '#0000ff', '#4b0082', '#9400d3'];
+            var i = 0;
+            var interval = setInterval(function() {
+                document.body.style.backgroundColor = colors[i];
+                i = (i + 1) % colors.length;
+            }, 200); 
+            setTimeout(function() {
+                clearInterval(interval);
+                document.body.style.backgroundColor = '#FADADD'; 
+                if (callback) {
+                    callback();
+                }
+            }, 2000); 
+        }
+
+        // Function to display the cat.gif initially
+        function displayCat() {
+            var imageContainer = document.getElementById('image-container');
+            var catImage = new Image();
+            catImage.src = 'cat.gif'; 
+            catImage.alt = 'Cat';
+            imageContainer.appendChild(catImage); 
+        }
+
+        // Function to display the cat-heart.gif AND the Date Details
+        function displaySuccess() {
+            // 1. Clear current image
+            document.getElementById('image-container').innerHTML = '';
+            
+            // 2. Show the Happy Cat
+            var imageContainer = document.getElementById('image-container');
+            var catHeartImage = new Image();
+            catHeartImage.src = 'cat-heart.gif'; 
+            catHeartImage.alt = 'Cat Heart';
+            imageContainer.appendChild(catHeartImage);
+
+            // 3. Clear the Question and Buttons
+            var textContainer = document.getElementById('text-container');
+            textContainer.innerHTML = ''; // This wipes out the Yes/No buttons
+
+            // 4. Create the Date Details HTML
+            var detailsHTML = `
+                <div id="date-details">
+                    <strong>When:</strong> February 14, 2026 7:00PM<br>
+                    (Pick-up time will be 6:00pm)<br><br>
+                    
+                    <strong>Where:</strong> Muelle Deli and Restaurant<br>
+                    <img src="muelle.jpg" alt="Muelle Deli" class="restaurant-photo"><br><br>
+                    
+                    <strong>Wear:</strong> Greatest smile.. and any shade of Red<br>
+                    
+                    <div class="final-message">I LOVE YOU!</div>
+                </div>
+            `;
+
+            // 5. Inject the details
+            textContainer.innerHTML = detailsHTML;
+        }
+
+        // Start the display
+        displayCat();
+    </script>
+</body>
+</html>
